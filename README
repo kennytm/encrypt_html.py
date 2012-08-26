@@ -1,0 +1,7 @@
+Usage: encrypt_html.py password < input.html > output.html
+
+The HTML page will be encrypted using AES-256-CBC, using the provided password.
+
+The file requires OpenSSL to be installed. The generated web page uses CryptoJS
+to decrypt the content.
+
