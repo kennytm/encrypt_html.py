@@ -20,7 +20,7 @@ import subprocess
 import re
 
 usage = """
-Usage: encrypt_html.py password < input.html > output.html
+Usage: encrypt_html.py password [prompt] < input.html > output.html
 
 The HTML page will be encrypted using AES-256-CBC, using the provided password.
 
@@ -28,7 +28,7 @@ The file requires OpenSSL to be installed. The generated web page uses CryptoJS
 to decrypt the content.
 """
 
-def write_head():
+def write_head(prompt):
     print("""<!DOCTYPE html>
         <html>
         <head>
@@ -50,7 +50,7 @@ def write_head():
         </head>
         <body>
             <h1>Encrypted document</h1>
-            <p>Please enter password to continue:</p>
+            <p>""", prompt, """</p>
             <form>
                 <input type="password" id="p" />
                 <input type="button" value="decrypt" onclick="dd();" />
@@ -75,7 +75,11 @@ def main(argv):
     if len(argv) <= 1:
         print(usage, file=sys.stderr)
     else:
-        write_head()
+        try:
+            prompt = argv[2]
+        except IndexError:
+            prompt = 'Please enter password to continue:'
+        write_head(prompt)
         encrypt(argv[1])
         write_tail()
 
